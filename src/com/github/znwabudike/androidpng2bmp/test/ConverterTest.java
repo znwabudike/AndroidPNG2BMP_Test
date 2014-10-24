@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.test.ActivityInstrumentationTestCase;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ActivityTestCase;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class ConverterTest extends ActivityInstrumentationTestCase2<Hacktivity>{
 	private Converter converter;
 	private Hacktivity hacktivity;
 	public byte[] byteArray;
+	private boolean isPNG;
 	public ConverterTest(){
 		super(Hacktivity.class);
 	}
@@ -28,24 +30,32 @@ public class ConverterTest extends ActivityInstrumentationTestCase2<Hacktivity>{
 	protected void setUp() throws Exception{
 		super.setUp();
 		hacktivity = getActivity();
-
-		//		byte[] array = 
-		testGetArray();
 		converter = new Converter();
+		//		byte[] array = 
 		
-		boolean isBM = converter.isBM(byteArray);
-		assertTrue(isBM);
+		
+		testGetArray();
+		testIsPNGHeader();
+		
 	}
 
+	public void testIsBMHeader(){
+		assertTrue(converter.isBM(byteArray));
+	}
+	public void testIsPNGHeader(){ 
+		assertTrue(isPNG);
+	}
+	
 	public void testGetArray() throws IOException {
 		Context testContext = getInstrumentation().getContext();
 		Resources testRes = testContext.getResources();
 		InputStream streamIn = (InputStream) testRes.openRawResource(R.raw.copy);
 		byteArray = new byte[streamIn.available()];
+		for(int i = 0; i < byteArray.length; i++){
+			byteArray[i] = (byte) streamIn.read();
+		}
 		log("length = " + byteArray.length);
-
 		assertNotNull(byteArray);
-		//		return array;
 	}
 
 	private void log(String msg) {
