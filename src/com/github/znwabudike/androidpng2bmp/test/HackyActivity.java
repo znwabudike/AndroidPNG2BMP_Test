@@ -1,11 +1,12 @@
 package com.github.znwabudike.androidpng2bmp.test;
 
-import android.support.v7.app.ActionBarActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class HackyActivity extends ActionBarActivity {
+public class HackyActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
