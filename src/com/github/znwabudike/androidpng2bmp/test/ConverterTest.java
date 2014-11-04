@@ -28,16 +28,30 @@ public class ConverterTest extends ActivityInstrumentationTestCase2<Hacktivity>{
 		super.setUp();
 		hacktivity = getActivity();
 		converter = new Converter();
-		//		byte[] array = 
-		
+	
 		
 		testGetArray();
 		testIsPNGHeader();
+		testSave();
+	}
+
+	public void testSave() {
+		try {
+			Context testContext = getInstrumentation().getContext();
+			//put byte stream here
+			pngByteArray = converter.getArrayFromResource(testContext, R.raw.copy);
+			//BMP image in bytes, do what you need to do here
+			bmpByteArray = converter.convert(pngByteArray);
+			assertTrue(converter.isBMPHeader(bmpByteArray));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	public void testIsBMHeader(){
-		assertTrue(converter.isBM(bmpByteArray));
+		assertTrue(converter.isBMPHeader(bmpByteArray));
 	}
 	public void testIsPNGHeader(){ 
 		assertTrue(converter.isPNGHeader(pngByteArray));
@@ -53,6 +67,14 @@ public class ConverterTest extends ActivityInstrumentationTestCase2<Hacktivity>{
 		log("png bytes = " + bytesToHex(pngByteArray));
 		assertNotNull(pngByteArray);
 		
+		assertTrue(testHasEndPNG() != 0);
+		
+	}
+
+	private int testHasEndPNG() {
+		int num = converter.hasEndPNG(pngByteArray);
+		log("index of end = " + num);
+		return num;
 	}
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
